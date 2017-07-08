@@ -1,0 +1,19 @@
+Sub test()
+    Dim ppie
+    Set ppie = CreateObject("internetexplorer.application")
+    With ppie
+        .Visible = True
+        .navigate "http://www.oilchem.net/fiber/"
+        Do Until .readyState = 4
+           DoEvents
+        Loop
+        .document.all("idBoxOpen").Click
+        Do Until .readyState = 4
+           DoEvents
+        Loop
+        .document.all("username").Value = "test"   'ÓÃ»§Ãû
+        .document.all("password").Value = "test"
+        .document.all("code").Value = "test"
+        .document.all("logSumbit").Click
+    End With
+    End Sub
