@@ -1,0 +1,34 @@
+Sub test()
+
+Temp = "'" & ThisWorkbook.Path & "\[web.xlsm]Sheet1'!"
+Temp1 = Temp & Rows(1).Address(, , xlR1C1)
+Temp1 = "Counta(" & Temp1 & ")"
+Debug.Print Temp1
+CCount = Application.ExecuteExcel4Macro(Temp1)
+Debug.Print CCount
+Temp2 = Temp & Columns("A").Address(, , xlR1C1)
+Temp2 = "Counta(" & Temp2 & ")"
+RCount = Application.ExecuteExcel4Macro(Temp2)
+ReDim arr(1 To RCount, 1 To CCount)
+
+For R = 1 To RCount
+    For C = 1 To CCount
+        Temp3 = Temp & Cells(R, C).Address(, , xlR1C1)
+        arr(R, C) = Application.ExecuteExcel4Macro(Temp3)
+    Next
+Next
+
+Range("A1").Resize(RCount, CCount).Value = arr
+
+End Sub
+
+
+Sub testtZ()
+
+Temp = "'" & ThisWorkbook.Path & "\[web.xlsm]Sheet1'!"
+Temp1 = Temp & Rows(1).Address(, , xlR1C1)
+Temp1 = "Match(""asd""," & Temp1 & ",0)"
+Debug.Print Temp1
+MsgBox Application.ExecuteExcel4Macro(Temp1)
+
+End Sub
