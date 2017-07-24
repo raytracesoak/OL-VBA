@@ -1,0 +1,80 @@
+Sub test()
+
+Temp = "'" & ThisWorkbook.Path & "\[web.xlsm]Sheet1'!"
+Temp1 = Temp & Rows(1).Address(, , xlR1C1)
+Temp1 = "Counta(" & Temp1 & ")"
+Debug.Print Temp1
+CCount = Application.ExecuteExcel4Macro(Temp1)
+Debug.Print CCount
+Temp2 = Temp & Columns("A").Address(, , xlR1C1)
+Temp2 = "Counta(" & Temp2 & ")"
+RCount = Application.ExecuteExcel4Macro(Temp2)
+ReDim arr(1 To RCount, 1 To CCount)
+
+For R = 1 To RCount
+    For C = 1 To CCount
+        Temp3 = Temp & Cells(R, C).Address(, , xlR1C1)
+        arr(R, C) = Application.ExecuteExcel4Macro(Temp3)
+    Next
+Next
+
+Range("A1").Resize(RCount, CCount).Value = arr
+
+End Sub
+
+
+Sub testtZ()
+
+BookName_R_real = 0
+
+Temp = "'" & ThisWorkbook.Path & "\[web.xlsm]Sheet1'!"
+Temp1 = Temp & Rows(1).Address(, , xlR1C1)
+Temp1 = "Match(""BookName""," & Temp1 & ",0)"
+BookName_C = Application.ExecuteExcel4Macro(Temp1)
+
+Temp2 = Temp & "C" & BookName_C
+Temp2 = "Match(""OU08""," & Temp2 & ",0)"
+BookName_R = Application.ExecuteExcel4Macro(Temp2)
+BookName_R_real = BookName_R
+
+Temp3 = Temp & "R1"
+Temp3 = "Match(""BookStatus""," & Temp3 & ",0)"
+BookStatus_C = Application.ExecuteExcel4Macro(Temp3)
+
+Temp4 = Temp & "R" & BookName_R & "C" & BookStatus_C
+BookStatus = Application.ExecuteExcel4Macro(Temp4)
+
+Temp5 = Temp & "C" & BookName_C
+Temp5 = "counta(" & Temp5 & ")"
+RCount = Application.ExecuteExcel4Macro(Temp5)
+
+Do While BookStatus = "Closed"
+    DoEvents
+    Temp2 = Temp & "R" & BookName_R_real + 1 & "C" & BookName_C & ":" & "R" & RCount & "C" & BookName_C
+    Temp2 = "Match(""OU08""," & Temp2 & ",0)"
+    Debug.Print Temp2
+    BookName_R = Application.ExecuteExcel4Macro(Temp2)
+    BookName_R_real = BookName_R_real + BookName_R
+    Debug.Print BookName_R_real
+    Temp4 = Temp & "R" & BookName_R_real & "C" & BookStatus_C
+    BookStatus = Application.ExecuteExcel4Macro(Temp4)
+Loop
+
+Debug.Print BookName_R
+Debug.Print BookName_R_real
+
+ReDim C_Name(1 To 8)
+C_Name(1) = "a"
+C_Name(2) = "b"
+C_Name(3) = "c"
+C_Name(4) = "d"
+
+For i = 1 To 4
+    TempC = Temp & "R1"
+    TempC = "Match(""" & C_Name(i) & """," & TempC & ",0)"
+    Temp_C = Application.ExecuteExcel4Macro(TempC)
+    TempC = Temp & "R" & BookName_R_real & "C" & Temp_C
+    Cells(i, 1) = Application.ExecuteExcel4Macro(TempC)
+Next
+
+End Sub
