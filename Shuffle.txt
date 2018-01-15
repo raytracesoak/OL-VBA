@@ -1,0 +1,19 @@
+Sub Shuffle()
+
+    Dim RndNumber, TempArray(19), i As Integer
+    Randomize (Timer)
+    For i = 0 To 19
+        TempArray(i) = i
+    Next i
+    For i = 19 To 0 Step -1
+        RndNumber = Int(i * Rnd)
+        Cells(20 - i, 1) = TempArray(RndNumber) + 1
+        TempArray(RndNumber) = TempArray(i)
+        For k = 0 To 19
+            Cells(k + 1, 21 - i) = TempArray(k)
+        Next k
+    Next i
+
+
+
+End Sub
