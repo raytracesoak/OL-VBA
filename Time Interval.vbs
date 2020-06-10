@@ -4,7 +4,7 @@ Public Sub ddd(intv As Integer)
     Dim Savetime As Double
     
     Savetime = timeGetTime
-    Do timeGetTime < Savetime + intv
+    Do While timeGetTime < Savetime + intv
         DoEvents
     Loop
 
