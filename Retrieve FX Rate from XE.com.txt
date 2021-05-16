@@ -1,0 +1,19 @@
+Sub asd()
+
+    Set hr = CreateObject("Msxml2.ServerXMLHTTP")
+    http = "https://xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD"
+    hr.Open "GET", http, False
+    hr.send
+    
+    otext = hr.responsetext
+    Set RegEx = CreateObject("vbscript.regexp")
+    With RegEx
+        .Global = True
+        .IgnoreCase = True
+        .Pattern = "result__BigRate-sc-1bsijpp-1 iGrAod.>([^<]+)<[^>]+>([^<]+)<"
+        Set oMatches = .Execute(otext)
+    End With
+    
+    Debug.Print oMatches(0).submatches(0) & oMatches(0).submatches(1)
+    
+End Sub
